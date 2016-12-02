@@ -1,23 +1,23 @@
 package main
 
 import (
-	"fmt"
-	"net"
-	"os"
-	"strconv"
+    "fmt"
+    "net"
+    "os"
+    "strconv"
     "sync"
 )
 
 var WorkGroup sync.WaitGroup;
 
 func ScanPort(port int, Target string, Timeout int) string {
-	conn, err := net.DialTimeout("tcp", Target+":"+strconv.Itoa(port), Timeout)
+    conn, err := net.DialTimeout("tcp", Target+":"+strconv.Itoa(port), Timeout)
 
-	if err != nil {
-		fmt.Println("ERR::" + strconv.Itoa(port) + ">" + err.Error())
-		return "Port " + strconv.Itoa(port) + " failed."
-	} else {
-		recvBuf := make([]byte, 1024)
+    if err != nil {
+        fmt.Println("ERR::" + strconv.Itoa(port) + ">" + err.Error())
+        return "Port " + strconv.Itoa(port) + " failed."
+    } else {
+        recvBuf := make([]byte, 1024)
         _, err = conn.Read(recvBuf[:])
         
         if err != nil {
@@ -31,7 +31,7 @@ func ScanPort(port int, Target string, Timeout int) string {
                 _, err = conn.Read(recvBuf[:])
             }
             
-			return "##################### Port "+strconv.Itoa(port)+" ###################\n\n" + string(recvBuf[:]) + "\n\n###############################################################"
+            return "##################### Port "+strconv.Itoa(port)+" ###################\n\n" + string(recvBuf[:]) + "\n\n###############################################################"
 		}
 
 	}
@@ -58,17 +58,17 @@ func main() {
         return
     }
     
-	Target := os.Args[1]
+    Target := os.Args[1]
     Threads, _ := strconv.Atoi(os.Args[2])
-	StartPort, _ := strconv.Atoi(os.Args[3])
+    StartPort, _ := strconv.Atoi(os.Args[3])
     EndPort, _ := strconv.Atoi(os.Args[4])
     Timeout, _ := strconv.Atoi(os.Args[5])
-	
-	var TotalPorts = EndPort - StartPort
-	var PortsPerThread = TotalPorts / Threads
-	var RemainingPorts = TotalPorts % Threads
-	
-	fmt.Println("################ CONFIG ##############\n")
+
+    var TotalPorts = EndPort - StartPort
+    var PortsPerThread = TotalPorts / Threads
+    var RemainingPorts = TotalPorts % Threads
+    
+    fmt.Println("################ CONFIG ##############\n")
     fmt.Println(" >Target = " + Target + "\n")
     fmt.Println(" >Start Port = " + strconv.Itoa(StartPort) + "\n")
     fmt.Println(" >End Port = " + strconv.Itoa(EndPort) + "\n")
