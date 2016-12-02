@@ -6,12 +6,16 @@ import (
     "os"
     "strconv"
     "sync"
+    "time"
 )
 
 var WorkGroup sync.WaitGroup;
 
 func ScanPort(port int, Target string, Timeout int) string {
-    conn, err := net.DialTimeout("tcp", Target+":"+strconv.Itoa(port), Timeout)
+    
+    Time, _ := time.ParseDuration(os.Args[5] + "s")
+    
+    conn, err := net.DialTimeout("tcp", Target+":"+strconv.Itoa(port), Time )
 
     if err != nil {
         fmt.Println("ERR::" + strconv.Itoa(port) + ">" + err.Error())
@@ -73,7 +77,7 @@ func main() {
     fmt.Println(" >Start Port = " + strconv.Itoa(StartPort) + "\n")
     fmt.Println(" >End Port = " + strconv.Itoa(EndPort) + "\n")
     fmt.Println(" >Number of Threads = " + strconv.Itoa(Threads) + "\n")
-    fmt.Println(" >Connection Timeout = " + strconv.Itoa(Tiemout) + "\n")
+    fmt.Println(" >Connection Timeout = " + strconv.Itoa(Timeout) + "\n")
     
     for i := 1; i <= Threads; i++ {
         fmt.Println(" >Thread"+ strconv.Itoa(i) + " : {" + strconv.Itoa( ((i-1)*PortsPerThread) + StartPort ) +":"+ strconv.Itoa( (i)*PortsPerThread + StartPort ) + "}\n")
