@@ -1,4 +1,4 @@
-GOPSCAN
+GO-PSCAN
 
 Golang port scanner and banner grabber using goroutines for multithreading.
 
