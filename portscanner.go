@@ -34,7 +34,17 @@ func ScanPort(port int, Target string, Timeout int) string {
                 fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n")
                 _, err = conn.Read(recvBuf[:])
             }
+            if string(recvBuf[:]) == "" {
+                fmt.Fprintf(conn, "GET / HTTP/1.1\r\n\r\n")
+                _, err = conn.Read(recvBuf[:])
+            }
+            if string(recvBuf[:]) == "" {
+                fmt.Fprintf(conn, "GET / HTTP/2.0\r\n\r\n")
+                _, err = conn.Read(recvBuf[:])
+            }
             
+            conn.Close()
+                
             return "##################### Port "+strconv.Itoa(port)+" ###################\n\n" + string(recvBuf[:]) + "\n\n###############################################################"
 		}
 
